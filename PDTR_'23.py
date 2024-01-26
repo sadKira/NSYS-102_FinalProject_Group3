@@ -1,14 +1,31 @@
-import tkinter as tk
-import time
+''' 
+    NSYS-102 Programming 1 Final Exam
+
+    by Group 3
+
+    Python-based Date & Time Recorder (PDTR)
+
+'''
+# importing tkinter module for GUI
+import tkinter as tk 
 from tkinter import messagebox
 from tkinter import *
 
-# resets DDTR
+# importing time module for time & date feature
+import time
+
+# fpdf modules need to be installed first (pip install fpdf) in the terminal
+from fpdf import FPDF 
+
+
+# resets PDTR
 def reset_window():
     display.destroy() # destroys currents window
+    print("Status: Program Reset!") # verifies that the program has reset
     main() # re-runs the main code
+    
 
-# main code for DDTR
+# main code for PDTR
 def main():
 
     global display # convert to global variable
@@ -53,7 +70,7 @@ def main():
     frame1.config(bg = "black")
     frame2 = tk.Frame(display)
     frame2.config(bg = "black")
-    #frame3 = tk.Frame(display)
+    
 
     # to constantly add the frames in the window
     # layered on top of each other
@@ -87,6 +104,8 @@ def main():
 
         username_5 = "eroy"
         password_5 = "12psits_"
+
+        
 
         # if username and password matches or not
         if username_entry.get() == username_1 and password_entry.get() == password_1:
@@ -190,7 +209,7 @@ def main():
 
         # generating date and time
         clock_date_time_in = time.strftime('%H:%M:%S %p  %m/%d %a')
-        
+    
         # time in label
         time_in_label = Label(widget_frame_f2, font = ("calibri", 12, "bold"), text = "TIME IN: ", fg = "white" ,bg = "black")
         time_in_label.grid(row = 6, column = 0, pady = 10)
@@ -229,14 +248,14 @@ def main():
         check_out_btn.config(state = tk.DISABLED, image = pictures[5])
 
     # checkout button and functionality
-    check_out_btn = tk.Button(widget_frame_f2, bg = "black", activebackground = "black", borderwidth = 0, image = pictures[5], text = 'Check-out', font = 'Calibri 13', command = checkout, state = tk.DISABLED)
+    check_out_btn = tk.Button(widget_frame_f2, bg = "black", activebackground = "black",
+     borderwidth = 0, image = pictures[5], text = 'Check-out', font = 'Calibri 13', command = checkout, state = tk.DISABLED)
     check_out_btn.grid(row = 4, column = 1, pady = 15)
 
     # displaying warning note
     display_label = Label(widget_frame_f2,  font = ("calibri", 11, "italic"), text = "*Clicking Check-Out will Record your Time", fg = "white" ,bg = "black")
     display_label.grid(row = 5, column = 0, columnspan = 2)
 
-    
     # records time and date of employee
     def record():
 
@@ -245,46 +264,178 @@ def main():
             # opens (creates if none) file and appends data
             with open(f'{username_1}.txt', "a") as employee_dtr:
                 print(45 * "=", file = employee_dtr) # border
+                print("GENKI INC. CHECK-IN AND OUT RECORD", file = employee_dtr) # record details
+                print(f"Employee Username: {username_1}", file = employee_dtr)
+                print(" ", file = employee_dtr)
                 print("Check-in time: ",clock_date_time_in, file = employee_dtr) # check-in time data
                 print("Check-out time: ",clock_date_time_out, file = employee_dtr) # check-out time data
                 print(45 * "=", file = employee_dtr) # border
                 messagebox.showinfo(title = " ", message = "        Record Saved!        ") # prompts user that the record is saved
+            
+            # function that converts txt file to pdf file
+            def pdf():
+
+                pdf = FPDF() # save FPDF() class into a variable pdf
+
+                pdf.add_page() # Add a page
+
+                pdf.set_font("Arial", size = 15) # set style and size of font of text in pdf
+
+                f = open(f"{username_1}.txt", "r") # open the text file in read mode
+
+                # insert the texts in pdf
+                
+
+                for x in f:
+                    pdf.cell(200, 10, txt = x, ln = 2, align = 'C')
+
+                pdf.output(f"{username_1}_record.pdf") # save the pdf
+
+                # verifies if conversion is finished
+                print("Status: PDF Converted!")
+
+            # calling pdf converter function
+            pdf()
                 
         if username_entry.get() == username_2 and password_entry.get() == password_2:
             # opens (creates if none) file and appends data
             with open(f'{username_2}.txt', "a") as employee_dtr:
                 print(45 * "=", file = employee_dtr) # border
+                print("GENKI INC. CHECK-IN AND OUT RECORD", file = employee_dtr) # record details
+                print(f"Employee Username: {username_2}", file = employee_dtr)
+                print(" ", file = employee_dtr)
                 print("Check-in time: ",clock_date_time_in, file = employee_dtr) # check-in time data
                 print("Check-out time: ",clock_date_time_out, file = employee_dtr) # check-out time data
                 print(45 * "=", file = employee_dtr) # border
                 messagebox.showinfo(title = " ", message = "        Record Saved!        ") # prompts user that the record is saved
+
+           # function that converts txt file to pdf file
+            def pdf():
+
+                pdf = FPDF() # save FPDF() class into a variable pdf
+
+                pdf.add_page() # Add a page
+
+                pdf.set_font("Arial", size = 15) # set style and size of font of text in pdf
+
+                f = open(f"{username_2}.txt", "r") # open the text file in read mode
+
+                # insert the texts in pdf
+                for x in f:
+                    pdf.cell(200, 10, txt = x, ln = 1, align = 'C')
+
+                pdf.output(f"{username_2}_record.pdf") # save the pdf
+
+                # verifies if conversion is finished
+                print("Status: PDF Converted!")
+
+            # calling pdf converter function
+            pdf()
 
         if username_entry.get() == username_3 and password_entry.get() == password_3:
             # opens (creates if none) file and appends data
             with open(f'{username_3}.txt', "a") as employee_dtr:
                 print(45 * "=", file = employee_dtr) # border
+                print("GENKI INC. CHECK-IN AND OUT RECORD", file = employee_dtr) # record details
+                print(f"Employee Username: {username_3}", file = employee_dtr)
+                print(" ", file = employee_dtr)
                 print("Check-in time: ",clock_date_time_in, file = employee_dtr) # check-in time data
                 print("Check-out time: ",clock_date_time_out, file = employee_dtr) # check-out time data
                 print(45 * "=", file = employee_dtr) # border
                 messagebox.showinfo(title = " ", message = "        Record Saved!        ") # prompts user that the record is saved
+
+           # function that converts txt file to pdf file
+            def pdf():
+
+                pdf = FPDF() # save FPDF() class into a variable pdf
+
+                pdf.add_page() # Add a page
+
+                pdf.set_font("Arial", size = 15) # set style and size of font of text in pdf
+
+                f = open(f"{username_3}.txt", "r") # open the text file in read mode
+
+                # insert the texts in pdf
+                for x in f:
+                    pdf.cell(200, 10, txt = x, ln = 1, align = 'C')
+
+                pdf.output(f"{username_3}_record.pdf") # save the pdf
+
+                # verifies if conversion is finished
+                print("Status: PDF Converted!")
+
+            # calling pdf converter function
+            pdf()
 
         if username_entry.get() == username_4 and password_entry.get() == password_4:
             # opens (creates if none) file and appends data
             with open(f'{username_4}.txt', "a") as employee_dtr:
                 print(45 * "=", file = employee_dtr) # border
+                print("GENKI INC. CHECK-IN AND OUT RECORD", file = employee_dtr) # record details
+                print(f"Employee Username: {username_4}", file = employee_dtr)
+                print(" ", file = employee_dtr)
                 print("Check-in time: ",clock_date_time_in, file = employee_dtr) # check-in time data
                 print("Check-out time: ",clock_date_time_out, file = employee_dtr) # check-out time data
                 print(45 * "=", file = employee_dtr) # border
                 messagebox.showinfo(title = " ", message = "        Record Saved!        ") # prompts user that the record is saved
 
+            # function that converts txt file to pdf file
+            def pdf():
+
+                pdf = FPDF() # save FPDF() class into a variable pdf
+
+                pdf.add_page() # Add a page
+
+                pdf.set_font("Arial", size = 15) # set style and size of font of text in pdf
+
+                f = open(f"{username_4}.txt", "r") # open the text file in read mode
+
+                # insert the texts in pdf
+                for x in f:
+                    pdf.cell(200, 10, txt = x, ln = 1, align = 'C')
+
+                pdf.output(f"{username_4}_record.pdf") # save the pdf
+
+                # verifies if conversion is finished
+                print("Status: PDF Converted!")
+
+            # calling pdf converter function
+            pdf()
+
         if username_entry.get() == username_5 and password_entry.get() == password_5:
             # opens (creates if none) file and appends data
             with open(f'{username_5}.txt', "a") as employee_dtr:
                 print(45 * "=", file = employee_dtr) # border
+                print("GENKI INC. CHECK-IN AND OUT RECORD", file = employee_dtr) # record details
+                print(f"Employee Username: {username_5}", file = employee_dtr)
+                print(" ", file = employee_dtr)
                 print("Check-in time: ",clock_date_time_in, file = employee_dtr) # check-in time data
                 print("Check-out time: ",clock_date_time_out, file = employee_dtr) # check-out time data
                 print(45 * "=", file = employee_dtr) # border
                 messagebox.showinfo(title = " ", message = "        Record Saved!        ") # prompts user that the record is saved
+
+            # function that converts txt file to pdf file
+            def pdf():
+
+                pdf = FPDF() # save FPDF() class into a variable pdf
+
+                pdf.add_page() # Add a page
+
+                pdf.set_font("Arial", size = 15) # set style and size of font of text in pdf
+
+                f = open(f"{username_5}.txt", "r") # open the text file in read mode
+
+                # insert the texts in pdf
+                for x in f:
+                    pdf.cell(200, 10, txt = x, ln = 1, align = 'C')
+
+                pdf.output(f"{username_5}_record.pdf") # save the pdf
+
+                # verifies if conversion is finished
+                print("Status: PDF Converted!")
+
+            # calling pdf converter function
+            pdf()
 
         # disables button after clicking
         print_btn.config(state = tk.DISABLED, image = pictures[7])
@@ -305,5 +456,5 @@ def main():
     display.mainloop()  # to loop GUI
 
 
-if __name__ == "__main__":
-    main()
+# calling function to run the program
+main()
